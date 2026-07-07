@@ -82,15 +82,16 @@
     <input type="text" id="search" class="search-bar" placeholder="🔍 Search menu options..." onkeyup="filterGames()">
 
     <div class="game-grid" id="arcade-grid">
-        <a href="./single-file.html" class="game-card" style="border-color: #238636;">
+        <!-- Changing the href to open inside the offline folder context fixes the file loading pathways -->
+        <a href="./offline/single-file.html" class="game-card" style="border-color: #238636;">
             🚀 Main Single File Pack
             <span class="tag" style="color: #56d364;">Bundled Arcade</span>
         </a>
-        <a href="./compressed.html" class="game-card">
+        <a href="./offline/compressed.html" class="game-card">
             🗜️ Compressed Web Pack
             <span class="tag">Alternative Loader</span>
         </a>
-        <a href="./file-input.html" class="game-card">
+        <a href="./offline/file-input.html" class="game-card">
             📁 Custom File Input Loader
             <span class="tag">Local Upload Play</span>
         </a>
