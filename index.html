@@ -34,7 +34,7 @@
         }
         .game-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 15px;
             width: 100%;
             max-width: 1000px;
@@ -43,21 +43,32 @@
             background-color: #161b22;
             border: 1px solid #30363d;
             border-radius: 8px;
-            padding: 20px;
+            padding: 25px 20px;
             text-align: center;
             text-decoration: none;
             color: #58a6ff;
             font-weight: 600;
             transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 80px;
         }
         .game-card:hover {
             background-color: #21262d;
-            border-color: #8b949e;
+            border-color: #58a6ff;
             transform: translateY(-2px);
         }
-        .status-msg {
+        .tag {
+            font-size: 0.75rem;
             color: #8b949e;
-            font-style: italic;
+            margin-top: 8px;
+            font-weight: normal;
+            background: #21262d;
+            padding: 2px 8px;
+            border-radius: 10px;
+            border: 1px solid #30363d;
         }
     </style>
 </head>
@@ -65,77 +76,38 @@
 
     <div class="header">
         <h1>🎮 Offline Games Arcade</h1>
-        <p>Your launcher is active! Searching files...</p>
+        <p>Select a launcher option below to access your game library</p>
     </div>
 
-    <input type="text" id="search" class="search-bar" placeholder="🔍 Search games..." onkeyup="filterGames()">
+    <input type="text" id="search" class="search-bar" placeholder="🔍 Search menu options..." onkeyup="filterGames()">
 
     <div class="game-grid" id="arcade-grid">
-        <p class="status-msg" id="loading">Scanning repository for games...</p>
+        <a href="./single-file.html" class="game-card" style="border-color: #238636;">
+            🚀 Main Single File Pack
+            <span class="tag" style="color: #56d364;">Bundled Arcade</span>
+        </a>
+        <a href="./compressed.html" class="game-card">
+            🗜️ Compressed Web Pack
+            <span class="tag">Alternative Loader</span>
+        </a>
+        <a href="./file-input.html" class="game-card">
+            📁 Custom File Input Loader
+            <span class="tag">Local Upload Play</span>
+        </a>
     </div>
 
     <script>
-        // Automatically fetch files from the GitHub repository API
-        // This dynamically finds all html files in the 'offline' folder
-        async function loadGames() {
-            const grid = document.getElementById('arcade-grid');
-            const loading = document.getElementById('loading');
-            
-            try {
-                // Extracts the username and repository from the current deployment URL
-                const response = await fetch('https://github.com');
-                const files = await response.json();
-                
-                if (!Array.isArray(files)) {
-                    throw new Error("Could not read directory structure");
-                }
-
-                loading.remove();
-
-                // Filter for HTML files and build clickable cards
-                files.forEach(file => {
-                    if (file.name.endsWith('.html') || file.name.endsWith('.htm')) {
-                        // Clean up the file name to look like a clean title
-                        let gameTitle = file.name
-                            .replace(/\.(html|htm)$/, '')
-                            .replace(/[-_]/g, ' ');
-
-                        const card = document.createElement('a');
-                        card.href = `./offline/${file.name}`;
-                        card.className = 'game-card';
-                        card.textContent = gameTitle;
-                        grid.appendChild(card);
-                    }
-                });
-
-                // Also add the standalone single-file option
-                const mainCard = document.createElement('a');
-                mainCard.href = './single-file.html';
-                mainCard.className = 'game-card';
-                mainCard.style.borderColor = '#238636';
-                mainCard.textContent = '⭐ Main Single File Pack';
-                grid.insertBefore(mainCard, grid.firstChild);
-
-            } catch (error) {
-                loading.textContent = "Error loading game files automatically. Please refresh or check back shortly!";
-                console.error(error);
-            }
-        }
-
         function filterGames() {
             let input = document.getElementById('search').value.toLowerCase();
             let cards = document.getElementsByClassName('game-card');
             for (let i = 0; i < cards.length; i++) {
                 if (cards[i].innerText.toLowerCase().includes(input)) {
-                    cards[i].style.display = "";
+                    cards[i].style.display = "flex";
                 } else {
                     cards[i].style.display = "none";
                 }
             }
         }
-
-        // Run scanning process immediately on load
-        loadGames();
     </script>
 </body>
 </html>
